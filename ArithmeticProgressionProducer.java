@@ -69,7 +69,7 @@ public class ArithmeticProgressionProducer implements Runnable {
 
         @Override
         public void run() {
-            Deque<Integer> stack = new ArrayDeque<Integer>();
+            Stack<Integer> stack = new Stack<Integer>();
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     if (isPrinting.compareAndSet(false, true)) {
