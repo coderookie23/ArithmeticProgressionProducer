@@ -9,7 +9,6 @@ public class ArithmeticProgressionProducer implements Runnable {
     private final long minIntervalMillis;
     private final long maxIntervalMillis;
     private final Random random = new Random();
-    //private final AtomicBoolean isPrinting = new AtomicBoolean(false);
 
     public ArithmeticProgressionProducer(BlockingQueue<Integer> queue, int start, int increment, long minIntervalMillis, long maxIntervalMillis) {
         this.queue = queue;
