@@ -24,6 +24,7 @@ public class ArithmeticProgressionProducer implements Runnable {
         int currentValue = start;
         while (!Thread.currentThread().isInterrupted()) {
             try {
+                System.out.println("Produced: " + currentValue);
                 queue.put(currentValue);
                 currentValue += increment;
                 Thread.sleep(random.nextInt((int) (maxIntervalMillis - minIntervalMillis)) + minIntervalMillis);
@@ -34,7 +35,7 @@ public class ArithmeticProgressionProducer implements Runnable {
     }
 
     public static void main(String[] args) {
-        BlockingQueue<Integer> queue = new LinkedBlockingQueue<>();
+        BlockingQueue<Integer> queue = new LinkedBlockingQueue<Integer>();
         ArithmeticProgressionProducer producer1 = new ArithmeticProgressionProducer(queue, 0, 1, 1000, 2000);
         ArithmeticProgressionProducer producer2 = new ArithmeticProgressionProducer(queue, 100, 2, 1500, 2500);
         Printer printer = new Printer(queue, 5000, 10000);
@@ -68,7 +69,7 @@ public class ArithmeticProgressionProducer implements Runnable {
 
         @Override
         public void run() {
-            Deque<Integer> stack = new ArrayDeque<>();
+            Deque<Integer> stack = new ArrayDeque<Integer>();
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     if (isPrinting.compareAndSet(false, true)) {
@@ -79,13 +80,14 @@ public class ArithmeticProgressionProducer implements Runnable {
                             Integer num = queue.poll();
                             if (num != null) {
                                 stack.push(num);
+                                System.out.println("Consumed: " + num);
                             }
                         }
                         isPrinting.set(false);
                         // print in LIFO order
                         while (!stack.isEmpty()) {
                             Integer num = stack.pop();
-                            System.out.println(num);
+                            System.out.println("Printed: " + num);
                         }
                     } else {
                         // wait until printing window is over
