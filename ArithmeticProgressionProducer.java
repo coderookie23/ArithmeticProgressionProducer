@@ -33,28 +33,6 @@ public class ArithmeticProgressionProducer implements Runnable {
             }
         }
     }
-
-    public static void main(String[] args) {
-        BlockingQueue<Integer> queue = new LinkedBlockingQueue<Integer>();
-        ArithmeticProgressionProducer producer1 = new ArithmeticProgressionProducer(queue, 0, 1, 1000, 2000);
-        ArithmeticProgressionProducer producer2 = new ArithmeticProgressionProducer(queue, 100, 2, 1500, 2500);
-        Printer printer = new Printer(queue, 5000, 10000);
-        ExecutorService executor = Executors.newFixedThreadPool(3);
-        executor.execute(producer1);
-        executor.execute(producer2);
-        executor.execute(printer);
-
-        // Wait for some time to allow the producers to generate numbers
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Shut down the executor
-        executor.shutdownNow();
-    }
-
     private static class Printer implements Runnable {
         private final BlockingQueue<Integer> queue;
         private final long minPrintWindowMillis;
@@ -98,5 +76,25 @@ public class ArithmeticProgressionProducer implements Runnable {
                 }
             }
         }
+    }
+    public static void main(String[] args) {
+        BlockingQueue<Integer> queue = new LinkedBlockingQueue<Integer>();
+        ArithmeticProgressionProducer producer1 = new ArithmeticProgressionProducer(queue, 3, 3, 1000, 2000);
+        ArithmeticProgressionProducer producer2 = new ArithmeticProgressionProducer(queue, 5, 5, 1500, 2500);
+        Printer printer = new Printer(queue, 5000, 10000);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        executor.execute(producer1);
+        executor.execute(producer2);
+        executor.execute(printer);
+
+        // Wait for some time to allow the producers to generate numbers
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Shut down the executor
+        executor.shutdownNow();
     }
 }
